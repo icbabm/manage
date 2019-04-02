@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ncomer.manage.mapper.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.ncomer.manage.model.Role">
+    <id column="R_Id" jdbcType="INTEGER" property="rId" />
+    <result column="R_Name" jdbcType="VARCHAR" property="rName" />
+    <result column="R_State" jdbcType="BIT" property="rState" />
+    <result column="R_Desc" jdbcType="VARCHAR" property="rDesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    R_Id, R_Name, R_State, R_Desc
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Role
+    where R_Id = #{rId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Role
+    where R_Id = #{rId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ncomer.manage.model.Role">
+    insert into Role (R_Id, R_Name, R_State, 
+      R_Desc)
+    values (#{rId,jdbcType=INTEGER}, #{rName,jdbcType=VARCHAR}, #{rState,jdbcType=BIT}, 
+      #{rDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ncomer.manage.model.Role">
+    insert into Role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rId != null">
+        R_Id,
+      </if>
+      <if test="rName != null">
+        R_Name,
+      </if>
+      <if test="rState != null">
+        R_State,
+      </if>
+      <if test="rDesc != null">
+        R_Desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rId != null">
+        #{rId,jdbcType=INTEGER},
+      </if>
+      <if test="rName != null">
+        #{rName,jdbcType=VARCHAR},
+      </if>
+      <if test="rState != null">
+        #{rState,jdbcType=BIT},
+      </if>
+      <if test="rDesc != null">
+        #{rDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ncomer.manage.model.Role">
+    update Role
+    <set>
+      <if test="rName != null">
+        R_Name = #{rName,jdbcType=VARCHAR},
+      </if>
+      <if test="rState != null">
+        R_State = #{rState,jdbcType=BIT},
+      </if>
+      <if test="rDesc != null">
+        R_Desc = #{rDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where R_Id = #{rId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ncomer.manage.model.Role">
+    update Role
+    set R_Name = #{rName,jdbcType=VARCHAR},
+      R_State = #{rState,jdbcType=BIT},
+      R_Desc = #{rDesc,jdbcType=VARCHAR}
+    where R_Id = #{rId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	SELECT  <include refid="Base_Column_List" /> FROM Role
+  	<where>
+    	<if test="rState != null and rState != ''">
+          R_State = #{rState,jdbcType=VARCHAR}
+      	</if>
+    </where>
+  	ORDER BY R_Id
+  </select>
+  
+  <select id="selectCount" resultType="int">
+  	SELECT COUNT(R_Id) FROM Role 
+  	 <where>
+    	<if test="rName != null and rName != ''">
+        and  R_Name = #{rName,jdbcType=VARCHAR}
+      	</if>
+      	<if test="rId != null and rId != ''">
+        and  R_Id !=  #{rId,jdbcType=INTEGER}
+      	</if>
+    </where>
+  </select>
+</mapper>

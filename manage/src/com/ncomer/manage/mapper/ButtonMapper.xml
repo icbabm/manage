@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ncomer.manage.mapper.ButtonMapper">
+  <resultMap id="BaseResultMap" type="com.ncomer.manage.model.Button">
+    <id column="B_Id" jdbcType="INTEGER" property="bId" />
+    <result column="B_Name" jdbcType="VARCHAR" property="bName" />
+    <result column="B_Type" jdbcType="VARCHAR" property="bType" />
+    <result column="B_Icon" jdbcType="VARCHAR" property="bIcon" />
+    <result column="B_State" jdbcType="BIT" property="bState" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    B_Id, B_Name, B_Type, B_Icon, B_State
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Button
+    where B_Id = #{bId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Button
+    where B_Id = #{bId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ncomer.manage.model.Button">
+    insert into Button (B_Id, B_Name, B_Type, 
+      B_Icon, B_State)
+    values (#{bId,jdbcType=INTEGER}, #{bName,jdbcType=VARCHAR}, #{bType,jdbcType=VARCHAR}, 
+      #{bIcon,jdbcType=VARCHAR}, #{bState,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ncomer.manage.model.Button">
+    insert into Button
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bId != null">
+        B_Id,
+      </if>
+      <if test="bName != null">
+        B_Name,
+      </if>
+      <if test="bType != null">
+        B_Type,
+      </if>
+      <if test="bIcon != null">
+        B_Icon,
+      </if>
+      <if test="bState != null">
+        B_State,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bId != null">
+        #{bId,jdbcType=INTEGER},
+      </if>
+      <if test="bName != null">
+        #{bName,jdbcType=VARCHAR},
+      </if>
+      <if test="bType != null">
+        #{bType,jdbcType=VARCHAR},
+      </if>
+      <if test="bIcon != null">
+        #{bIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="bState != null">
+        #{bState,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ncomer.manage.model.Button">
+    update Button
+    <set>
+      <if test="bName != null">
+        B_Name = #{bName,jdbcType=VARCHAR},
+      </if>
+      <if test="bType != null">
+        B_Type = #{bType,jdbcType=VARCHAR},
+      </if>
+      <if test="bIcon != null">
+        B_Icon = #{bIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="bState != null">
+        B_State = #{bState,jdbcType=BIT},
+      </if>
+    </set>
+    where B_Id = #{bId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ncomer.manage.model.Button">
+    update Button
+    set B_Name = #{bName,jdbcType=VARCHAR},
+      B_Type = #{bType,jdbcType=VARCHAR},
+      B_Icon = #{bIcon,jdbcType=VARCHAR},
+      B_State = #{bState,jdbcType=BIT}
+    where B_Id = #{bId,jdbcType=INTEGER}
+  </update>
+</mapper>

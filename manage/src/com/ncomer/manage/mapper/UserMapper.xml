@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ncomer.manage.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.ncomer.manage.model.User">
+    <id column="U_Id" jdbcType="INTEGER" property="uId" />
+    <result column="U_Code" jdbcType="VARCHAR" property="uCode" />
+    <result column="U_LoginName" jdbcType="VARCHAR" property="uLoginname" />
+    <result column="U_Password" jdbcType="VARCHAR" property="uPassword" />
+    <result column="U_Name" jdbcType="VARCHAR" property="uName" />
+    <result column="U_Gender" jdbcType="INTEGER" property="uGender" />
+    <result column="U_Ctime" jdbcType="TIMESTAMP" property="uCtime" />
+    <result column="U_State" jdbcType="INTEGER" property="uState" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    U_Id, U_Code, U_LoginName, U_Password, U_Name, U_Gender, U_Ctime, U_State
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from User
+    where U_Id = #{uId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from User
+    where U_Id = #{uId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.ncomer.manage.model.User">
+    insert into User (U_Id, U_Code, U_LoginName, 
+      U_Password, U_Name, U_Gender, 
+      U_Ctime, U_State)
+    values (#{uId,jdbcType=INTEGER}, #{uCode,jdbcType=VARCHAR}, #{uLoginname,jdbcType=VARCHAR}, 
+      #{uPassword,jdbcType=VARCHAR}, #{uName,jdbcType=VARCHAR}, #{uGender,jdbcType=INTEGER}, 
+      #{uCtime,jdbcType=TIMESTAMP}, #{uState,jdbcType=INTEGER})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.ncomer.manage.model.User">
+    insert into User
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
+        U_Id,
+      </if>
+      <if test="uCode != null">
+        U_Code,
+      </if>
+      <if test="uLoginname != null">
+        U_LoginName,
+      </if>
+      <if test="uPassword != null">
+        U_Password,
+      </if>
+      <if test="uName != null">
+        U_Name,
+      </if>
+      <if test="uGender != null">
+        U_Gender,
+      </if>
+      <if test="uCtime != null">
+        U_Ctime,
+      </if>
+      <if test="uState != null">
+        U_State,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
+        #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="uCode != null">
+        #{uCode,jdbcType=VARCHAR},
+      </if>
+      <if test="uLoginname != null">
+        #{uLoginname,jdbcType=VARCHAR},
+      </if>
+      <if test="uPassword != null">
+        #{uPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="uName != null">
+        #{uName,jdbcType=VARCHAR},
+      </if>
+      <if test="uGender != null">
+        #{uGender,jdbcType=INTEGER},
+      </if>
+      <if test="uCtime != null">
+        #{uCtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uState != null">
+        #{uState,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.ncomer.manage.model.User">
+    update User
+    <set>
+      <if test="uCode != null">
+        U_Code = #{uCode,jdbcType=VARCHAR},
+      </if>
+      <if test="uLoginname != null">
+        U_LoginName = #{uLoginname,jdbcType=VARCHAR},
+      </if>
+      <if test="uPassword != null">
+        U_Password = #{uPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="uName != null">
+        U_Name = #{uName,jdbcType=VARCHAR},
+      </if>
+      <if test="uGender != null">
+        U_Gender = #{uGender,jdbcType=INTEGER},
+      </if>
+      <if test="uCtime != null">
+        U_Ctime = #{uCtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uState != null">
+        U_State = #{uState,jdbcType=INTEGER},
+      </if>
+    </set>
+    where U_Id = #{uId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.ncomer.manage.model.User">
+    update User
+    set U_Code = #{uCode,jdbcType=VARCHAR},
+      U_LoginName = #{uLoginname,jdbcType=VARCHAR},
+      U_Password = #{uPassword,jdbcType=VARCHAR},
+      U_Name = #{uName,jdbcType=VARCHAR},
+      U_Gender = #{uGender,jdbcType=INTEGER},
+      U_Ctime = #{uCtime,jdbcType=TIMESTAMP},
+      U_State = #{uState,jdbcType=INTEGER}
+    where U_Id = #{uId,jdbcType=INTEGER}
+  </update>
+  
+  <select id= "selectUserByLoginName" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	 select 
+    <include refid="Base_Column_List" />
+    from User
+    where U_LoginName = #{uLoginName}
+  </select>
+  
+   <select id="selectCountByLoginName" resultType="int">
+  	select 
+    count(U_Id) 
+    from User
+    <where>
+    	<if test="uLoginName != null and uLoginName != ''">
+        and  U_LoginName = #{uLoginName}
+      	</if>
+      	<if test="uId != null and uId != '-1'">
+        and  U_Id != #{uId}
+      	</if>
+    </where>
+  </select>
+  
+  <select id="selectList"  resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from User
+    <where>
+    	u_LoginName !='admin' 
+    	<if test="uName != null and uName != ''">
+			<bind name="uName" value="'%'+uName+'%'"/>
+			and U_Name LIKE #{uName}
+		</if>
+    	<if test="uState != null and uState != ''">
+        	and  U_State = #{uState}
+      	</if>
+      	<if test="startDate != null and startDate != ''">
+        	and  U_Ctime &gt; #{startDate}
+      	</if>
+      	<if test="endDate != null and endDate != ''">
+        	and  U_Ctime &gt; #{endDate}
+      	</if>
+    </where>
+    ORDER BY U_Id DESC
+  </select>
+  
+</mapper>

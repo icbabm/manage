@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ncomer.manage.mapper.MenuMapper">
+  <resultMap id="BaseResultMap" type="com.ncomer.manage.model.Menu">
+    <id column="M_Id" jdbcType="INTEGER" property="mId" />
+    <result column="M_Name" jdbcType="VARCHAR" property="mName" />
+    <result column="M_Icon" jdbcType="VARCHAR" property="mIcon" />
+    <result column="M_Url" jdbcType="VARCHAR" property="mUrl" />
+    <result column="M_State" jdbcType="INTEGER" property="mState" />
+    <result column="M_Sort" jdbcType="INTEGER" property="mSort" />
+    <result column="M_Pid" jdbcType="INTEGER" property="mPid" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    M_Id, M_Name, M_Icon, M_Url, M_State, M_Sort, M_Pid, state
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Menu
+    where M_Id = #{mId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Menu
+    where M_Id = #{mId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ncomer.manage.model.Menu">
+    insert into Menu (M_Id, M_Name, M_Icon, 
+      M_Url, M_State, M_Sort, 
+      M_Pid, state)
+    values (#{mId,jdbcType=INTEGER}, #{mName,jdbcType=VARCHAR}, #{mIcon,jdbcType=VARCHAR}, 
+      #{mUrl,jdbcType=VARCHAR}, #{mState,jdbcType=INTEGER}, #{mSort,jdbcType=INTEGER}, 
+      #{mPid,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ncomer.manage.model.Menu">
+    insert into Menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        M_Id,
+      </if>
+      <if test="mName != null">
+        M_Name,
+      </if>
+      <if test="mIcon != null">
+        M_Icon,
+      </if>
+      <if test="mUrl != null">
+        M_Url,
+      </if>
+      <if test="mState != null">
+        M_State,
+      </if>
+      <if test="mSort != null">
+        M_Sort,
+      </if>
+      <if test="mPid != null">
+        M_Pid,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        #{mId,jdbcType=INTEGER},
+      </if>
+      <if test="mName != null">
+        #{mName,jdbcType=VARCHAR},
+      </if>
+      <if test="mIcon != null">
+        #{mIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="mUrl != null">
+        #{mUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="mState != null">
+        #{mState,jdbcType=INTEGER},
+      </if>
+      <if test="mSort != null">
+        #{mSort,jdbcType=INTEGER},
+      </if>
+      <if test="mPid != null">
+        #{mPid,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ncomer.manage.model.Menu">
+    update Menu
+    <set>
+      <if test="mName != null">
+        M_Name = #{mName,jdbcType=VARCHAR},
+      </if>
+      <if test="mIcon != null">
+        M_Icon = #{mIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="mUrl != null">
+        M_Url = #{mUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="mState != null">
+        M_State = #{mState,jdbcType=INTEGER},
+      </if>
+      <if test="mSort != null">
+        M_Sort = #{mSort,jdbcType=INTEGER},
+      </if>
+      <if test="mPid != null">
+        M_Pid = #{mPid,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where M_Id = #{mId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ncomer.manage.model.Menu">
+    update Menu
+    set M_Name = #{mName,jdbcType=VARCHAR},
+      M_Icon = #{mIcon,jdbcType=VARCHAR},
+      M_Url = #{mUrl,jdbcType=VARCHAR},
+      M_State = #{mState,jdbcType=INTEGER},
+      M_Sort = #{mSort,jdbcType=INTEGER},
+      M_Pid = #{mPid,jdbcType=INTEGER},
+      state = #{state,jdbcType=VARCHAR}
+    where M_Id = #{mId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectList" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List" /> FROM Menu WHERE M_Pid = #{mPid,jdbcType=INTEGER}
+  </select>
+</mapper>

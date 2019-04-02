@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ncomer.manage.mapper.DepartmentMapper">
+  <resultMap id="BaseResultMap" type="com.ncomer.manage.model.Department">
+    <id column="Dept_Id" jdbcType="INTEGER" property="deptId" />
+    <result column="Dept_Code" jdbcType="VARCHAR" property="deptCode" />
+    <result column="Dept_Name" jdbcType="VARCHAR" property="deptName" />
+    <result column="Dept_Desc" jdbcType="VARCHAR" property="deptDesc" />
+    <result column="Dept_Sort" jdbcType="INTEGER" property="deptSort" />
+    <result column="Dept_Pid" jdbcType="INTEGER" property="deptPid" />
+    <result column="Dept_Ctime" jdbcType="TIMESTAMP" property="deptCtime" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Dept_Id, Dept_Code, Dept_Name, Dept_Desc, Dept_Sort, Dept_Pid, Dept_Ctime, state
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Department
+    where Dept_Id = #{deptId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Department
+    where Dept_Id = #{deptId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ncomer.manage.model.Department">
+    insert into Department (Dept_Id, Dept_Code, Dept_Name, 
+      Dept_Desc, Dept_Sort, Dept_Pid, 
+      Dept_Ctime, state)
+    values (#{deptId,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, #{deptName,jdbcType=VARCHAR}, 
+      #{deptDesc,jdbcType=VARCHAR}, #{deptSort,jdbcType=INTEGER}, #{deptPid,jdbcType=INTEGER}, 
+      #{deptCtime,jdbcType=TIMESTAMP}, #{state,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ncomer.manage.model.Department">
+    insert into Department
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="deptId != null">
+        Dept_Id,
+      </if>
+      <if test="deptCode != null">
+        Dept_Code,
+      </if>
+      <if test="deptName != null">
+        Dept_Name,
+      </if>
+      <if test="deptDesc != null">
+        Dept_Desc,
+      </if>
+      <if test="deptSort != null">
+        Dept_Sort,
+      </if>
+      <if test="deptPid != null">
+        Dept_Pid,
+      </if>
+      <if test="deptCtime != null">
+        Dept_Ctime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="deptId != null">
+        #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="deptCode != null">
+        #{deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null">
+        #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptDesc != null">
+        #{deptDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="deptSort != null">
+        #{deptSort,jdbcType=INTEGER},
+      </if>
+      <if test="deptPid != null">
+        #{deptPid,jdbcType=INTEGER},
+      </if>
+      <if test="deptCtime != null">
+        #{deptCtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ncomer.manage.model.Department">
+    update Department
+    <set>
+      <if test="deptCode != null">
+        Dept_Code = #{deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null">
+        Dept_Name = #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptDesc != null">
+        Dept_Desc = #{deptDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="deptSort != null">
+        Dept_Sort = #{deptSort,jdbcType=INTEGER},
+      </if>
+      <if test="deptPid != null">
+        Dept_Pid = #{deptPid,jdbcType=INTEGER},
+      </if>
+      <if test="deptCtime != null">
+        Dept_Ctime = #{deptCtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Dept_Id = #{deptId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ncomer.manage.model.Department">
+    update Department
+    set Dept_Code = #{deptCode,jdbcType=VARCHAR},
+      Dept_Name = #{deptName,jdbcType=VARCHAR},
+      Dept_Desc = #{deptDesc,jdbcType=VARCHAR},
+      Dept_Sort = #{deptSort,jdbcType=INTEGER},
+      Dept_Pid = #{deptPid,jdbcType=INTEGER},
+      Dept_Ctime = #{deptCtime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR}
+    where Dept_Id = #{deptId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectList"  resultMap="BaseResultMap">
+  	SELECT * FROM Department WHERE Dept_Pid = #{deptId,jdbcType=INTEGER}
+  </select>
+</mapper>

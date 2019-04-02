@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+					    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+					    http://www.springframework.org/schema/tx 
+					    http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+					    http://www.springframework.org/schema/context 
+					    http://www.springframework.org/schema/context/spring-context-4.3.xsd
+					    http://www.springframework.org/schema/aop 
+					    http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+					    
+    
+    <!-- 使用注解式注入 -->
+    <!--<context:annotation-config />-->
+
+    <!-- 自动扫描 -->
+    <!--<context:component-scan>除了具有<context:annotation-config />的功能之外，还具有自动将带有@component,@service,@Repository等注解的对象注册到spring容器中的功能。-->
+    <!--<context:annotation-config />和 <context:component-scan>同时存在的时候，前者会被忽略。也就是那些@autowire，@resource等注入注解只会被注入一次-->
+    <context:component-scan base-package="com.ncomer.manage.service" />
+    
+    <!-- 引入数据源 -->
+    <!--<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:jdbc.properties" />
+    </bean>-->
+    <context:property-placeholder location="classpath:jdbc.properties" />
+    
+    <!-- 配置数据源 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <!-- 初始化连接大小 -->
+        <property name="initialSize" value="${jdbc.initialSize}"></property>
+        <!-- 连接池最大数量 -->
+        <property name="maxTotal" value="${jdbc.maxTotal}"></property>
+        <!-- 连接池最大空闲 -->
+        <property name="maxIdle" value="${jdbc.maxIdle}"></property>
+        <!-- 连接池最小空闲 -->
+        <property name="minIdle" value="${jdbc.minIdle}"></property>
+    </bean>
+    
+     <!-- 事务管理器，依赖数据源 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!--  配置参与事务的类（切面） -->
+    <aop:config>
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.ncomer.manage.service.*.*(..))" />
+    </aop:config>
+
+    <!-- 使用声明方式配置事务（通知）-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!-- 传播行为 -->
+            <tx:method name="add*" propagation="REQUIRED" />
+            <tx:method name="del*" propagation="REQUIRED" />
+            <tx:method name="edit*" propagation="REQUIRED" />
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+    
+    <!-- 开启事务注解 -->
+    <!-- <tx:annotation-driven transaction-manager="transactionManager"/> -->
+    
+    <!-- 配置mybatis工厂，sqlSessionFactory -->
+    <!-- 让spring管理sqlsessionfactory 使用mybatis和spring整合包中的，不需要mybatis的配置映射文件 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<!-- 注入数据源 -->
+        <property name="dataSource" ref="dataSource" />
+        <!-- 自动扫描mapping.xml文件 -->
+        <property name="mapperLocations" value="classpath:com/ncomer/manage/mapper/*.xml"></property>
+        <!-- 扫描model包 使用别名-->
+        <property name="typeAliasesPackage" value="com.ncomer.manage.model"/>
+        <!-- 加载mybatis的全局配置文件 -->
+        <!-- <property name="configLocation" value="classpath:SqlMapConfig.xml" /> -->
+        <!-- 配置mybatis分页插件PageHelper -->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <!-- 什么都不配，使用默认的配置 -->
+                        <value></value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+    </bean>
+    
+    <!-- 配置mapper扫描器 -->
+    <!-- 通过MapperScannerConfigurer进行mapper扫描创建代理对象 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--basePackage指定要扫描的包，在此包之下的映射器都会被搜索到。
+         可指定多个包，包与包之间用逗号或分号分隔-->
+        <property name="basePackage" value="com.ncomer.manage.mapper" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+    
+ </beans>
